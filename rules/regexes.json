@@ -1,0 +1,70 @@
+{
+  "rules": [
+    {
+      "name": "Dynamic code execution: eval(",
+      "regex": "\\beval\\s*\\(",
+      "severity": "high",
+      "description": "Dynamische Codeausführung via eval(). In Backdoors häufig verwendet."
+    },
+    {
+      "name": "Dynamic code execution: assert(",
+      "regex": "\\bassert\\s*\\(",
+      "severity": "high",
+      "description": "assert() kann in älteren PHPs Code auswerten."
+    },
+    {
+      "name": "Deprecated dangerous: preg_replace /e",
+      "regex": "\\bpreg_replace\\s*\\([^)]*?/e[^)]*\\)",
+      "severity": "high",
+      "description": "Der /e-Modifier wertet Matches als PHP-Code aus (entfernt in neueren PHP-Versionen)."
+    },
+    {
+      "name": "Obfuscation/Decoding: base64_decode(",
+      "regex": "\\bbase64_decode\\s*\\(",
+      "severity": "medium",
+      "description": "Häufige Entschleierung in Kombination mit eval/assert/gzinflate/str_rot13."
+    },
+    {
+      "name": "Obfuscation/Decoding: gzinflate(",
+      "regex": "\\bgzinflate\\s*\\(",
+      "severity": "medium",
+      "description": "Häufige Entschleierung in verschachtelten Ketten."
+    },
+    {
+      "name": "Obfuscation/Decoding: str_rot13(",
+      "regex": "\\bstr_rot13\\s*\\(",
+      "severity": "low",
+      "description": "Kann Teil einer Verschleierung sein."
+    },
+    {
+      "name": "Dynamic function creation: create_function(",
+      "regex": "\\bcreate_function\\s*\\(",
+      "severity": "medium",
+      "description": "Kann zur dynamischen Codeausführung missbraucht werden."
+    },
+    {
+      "name": "System execution: system/shell_exec/passthru/etc.",
+      "regex": "(?:`[^`]*`|\\bsystem\\s*\\(|\\bshell_exec\\s*\\(|\\bpassthru\\s*\\(|\\bpopen\\s*\\(|\\bproc_open\\s*\\()",
+      "severity": "high",
+      "description": "Systembefehle ausführen; in Webshells typisch."
+    },
+    {
+      "name": "Remote include over HTTP",
+      "regex": "\\b(include|require|include_once|require_once)\\s*\\(\\s*['\\\"]https?://",
+      "severity": "high",
+      "description": "Inkludieren von Code über das Netzwerk ist riskant."
+    },
+    {
+      "name": "User input into dangerous sinks",
+      "regex": "\\$_(GET|POST|REQUEST|COOKIE)\\s*\\[[^\\]]+\\][^;\\n]*?(eval|assert|shell_exec|system|passthru)\\s*\\(",
+      "severity": "high",
+      "description": "Direkte Weitergabe von Eingaben an gefährliche Funktionen."
+    },
+    {
+      "name": "Writing .php files",
+      "regex": "\\bfile_put_contents\\s*\\([^)]*\\.php['\\\"]?",
+      "severity": "medium",
+      "description": "Kann für Droppers / Persistenz missbraucht werden."
+    }
+  ]
+}
